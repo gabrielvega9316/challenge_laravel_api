@@ -8,12 +8,6 @@ use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
-    public $categories = [
-        ['name' => 'Macbook'],
-        ['name' => 'Notebook'],
-        ['name' => 'Tablet'],
-        ['name' => 'Smartphone'],
-    ];
 
     /**
      * Run the database seeds.
@@ -22,7 +16,14 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->$categories as $category){
+        $categories = [
+            ['name' => 'Macbook'],
+            ['name' => 'Notebook'],
+            ['name' => 'Tablet'],
+            ['name' => 'Smartphone'],
+        ];
+
+        foreach ($categories as $category){
             Category::create($category);
         }
     }

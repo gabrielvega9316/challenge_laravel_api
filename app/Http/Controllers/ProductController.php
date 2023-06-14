@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Services\ApiResponse;
+
 
 class ProductController extends Controller
 {
@@ -35,7 +38,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
+        $data = $request->all();
+        $validator = Validator::make($data, Product::$rules);
+        if($validator) return ApiResponse::badRequest($validator);
+
+        DB::beginTransaction();
+        try {
+            $product = Product::create($data);
+            DB::commit();
+
+            $response = $product->with('category');
+            return ApiResponse::created(__('messages.product_store_ok'), $response->toArray(), 'product');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
+        }
     }
 
     /**
