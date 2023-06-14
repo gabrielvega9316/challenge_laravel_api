@@ -16,6 +16,8 @@ class Category extends Model
         'description',
     ];
 
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
+
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',

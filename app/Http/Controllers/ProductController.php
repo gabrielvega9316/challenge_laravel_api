@@ -6,6 +6,9 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Services\ApiResponse;
+use App\Services\ImageService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 
 class ProductController extends Controller
@@ -15,19 +18,22 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $perPage = $request->query('per_page', 10);
+        $search = $request->query('search');
+        try {
+            $query = Product::query();
+            if ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+            $products = $query->paginate($perPage);
+            return ApiResponse::ok(__('messages.product_get_ok'), 'products', $products->toArray());
+
+        } catch (\Throwable $th) {
+            return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
+        }
     }
 
     /**
@@ -38,17 +44,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         $data = $request->all();
         $validator = Validator::make($data, Product::$rules);
-        if($validator) return ApiResponse::badRequest($validator);
+        if($validator->fails()) return ApiResponse::badRequest($validator->errors());
+        // dd('aqui toy');
 
         DB::beginTransaction();
         try {
             $product = Product::create($data);
-            DB::commit();
+            $image = ImageService::store($request->file('file'), $product);
+            $product->update(['image' => $image]);
 
-            $response = $product->with('category');
+            $response = $product->with('category')->find($product->id);
+            DB::commit();
             return ApiResponse::created(__('messages.product_store_ok'), $response->toArray(), 'product');
         } catch (\Throwable $th) {
             DB::rollback();
@@ -64,18 +72,13 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
-    }
+        try {
+            if($product) return ApiResponse::ok(__('messages.product_get_id_ok'), $product, 'product');
+            else return ApiResponse::notFound(__('messages.product_get_id_404'));
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
+        } catch (\Throwable $th) {
+            return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
+        }
     }
 
     /**
@@ -87,7 +90,21 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $data = $request->all();
+        $validator = Validator::make($data, Product::$rules);
+        if($validator->fails()) throw new ValidationException($validator);
+
+        DB::beginTransaction();
+        try {
+            $product->update($data);
+            //logica de update de imagen
+            DB::commit();
+
+            $response = $product->with('category');
+            return ApiResponse::ok(__('messages.product_update_ok'), $response->toArray(), 'product');
+        } catch (\Throwable $th) {
+            return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
+        }
     }
 
     /**
@@ -98,6 +115,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if($product){
+            $product->delete();
+            return ApiResponse::ok(__('messages.product_delete_ok'), $product, 'product');
+        } else {
+            return ApiResponse::notFound(__('messages.product_delete_404'));
+        }
     }
 }

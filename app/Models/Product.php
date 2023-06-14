@@ -42,10 +42,10 @@ class Product extends Model
     public static $rules = [
         'name' => 'required|string|max:50',
         'description' => 'nullable|string|max:50',
-        'image' => 'required|string',
+        'image' => 'nullable|string',
         'brand' => 'required|string',
-        'price' => 'required|float',
-        'price_sale' => 'nullable|float',
+        'price' => 'required|numeric',
+        'price_sale' => 'nullable|numeric',
         'category_id' => 'required|integer',
         'stock' => 'required|integer',
     ];
