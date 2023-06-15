@@ -1,20 +1,14 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
 # Proyecto MailUp
 
-Este proyecto Laravel es una aplicación [describir brevemente la funcionalidad del proyecto]. A continuación, se proporcionan instrucciones para configurar y levantar el proyecto localmente, así como información sobre cómo utilizar la API.
+Este proyecto Laravel es una aplicación para realizar abm de productos. A continuación, se proporcionan instrucciones para configurar y levantar el proyecto localmente, así como información sobre cómo utilizar la API.
 
 
 ## Configuración del entorno
 
-Para levantar el proyecto sólo se debe ejecutar el comando
+Ejecutar composer para instalar las dependencias necesarias
 ```sh
 composer install
 ```
@@ -29,7 +23,7 @@ DB_USERNAME=tu_usuario
 DB_PASSWORD=tu_contraseña
 ```
 
-2. Ejecuta las migraciones y los seeders para configurar la base de datos:
+2. Ejecuta las migraciones y los seeders para armar la base de datos:
 
 ```sh
 php artisan migrate --seed
@@ -47,7 +41,8 @@ El proyecto estará disponible en la dirección local [http://localhost:8000](ht
 ## Uso de la API
 
 La API proporciona un conjunto de endpoints para interactuar con los productos. A continuación se muestra la ruta de la API y los métodos disponibles:
-Puedes importar collection para realizar solicitudes a la API, Puedes obtenerla [Aqui](https://github.com/gabrielvega9316/mailup_api/blob/main/resources/docs/MailUp-api.postman_collection.json)
+
+Te facilito la collection para importar, asi interactúes con la API, Puedes obtenerla [Aqui](https://github.com/gabrielvega9316/mailup_api/blob/main/resources/docs/MailUp-api.postman_collection.json)
 
 Los endpoints correspondientes a los métodos mencionados son los siguientes:
 
@@ -61,7 +56,18 @@ Los endpoints correspondientes a los métodos mencionados son los siguientes:
     
 - POST /product: Crea un nuevo producto.
 - PUT /product/{id}: Actualiza un producto existente.
+    - Manejo de imagen: Si envia una imagen esta remplazara a la antigua imagen por la nueva, Si no envia imagen conservara la almacenada.
+    - Header necesario: key -> X-HTTP-Method-Override  value -> PUT 
 - DELETE /product/{id}: Elimina un producto.
 
-Para interactuar con la API, puedes utilizar herramientas como cURL o un cliente HTTP. Aquí tienes algunos ejemplos de cómo se verían las solicitudes:
+Para interactuar con la API, recomiendo utilizar la herramienta postman . La estructura de la respuesta es la siguiente:
+
+```sh
+    "success": true,
+    "message": "Product successfully created",
+    "response": {
+        .
+        .
+    }
+```
 
