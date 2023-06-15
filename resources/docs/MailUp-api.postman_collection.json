@@ -16,12 +16,12 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "Macbook",
+							"value": "hp pro 12",
 							"type": "text"
 						},
 						{
 							"key": "description",
-							"value": "ejemplo de descripcion",
+							"value": "ejemplo de descripci",
 							"type": "text"
 						},
 						{
@@ -31,7 +31,7 @@
 						},
 						{
 							"key": "price",
-							"value": "2000",
+							"value": "2000.20",
 							"type": "text"
 						},
 						{
@@ -52,7 +52,13 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/C:/Users/gabri/Pictures/sitenso-rock-i.png"
+							"src": "/C:/Users/gabri/Pictures/cv_gabriel/174857.png"
+						},
+						{
+							"key": "path_image",
+							"value": "",
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
@@ -89,7 +95,7 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "Macbook 3000",
+							"value": "hp pro 121212",
 							"type": "text"
 						},
 						{
@@ -104,7 +110,7 @@
 						},
 						{
 							"key": "price",
-							"value": "2000",
+							"value": "2001",
 							"type": "text"
 						},
 						{
@@ -125,13 +131,19 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": [],
+							"src": "/C:/Users/gabri/Pictures/cv_gabriel/Yanasus-0018_v2.jpg",
+							"disabled": true
+						},
+						{
+							"key": "path_image",
+							"value": "",
+							"type": "text",
 							"disabled": true
 						}
 					]
 				},
 				"url": {
-					"raw": "127.0.0.1:8000/api/product/24",
+					"raw": "127.0.0.1:8000/api/product/2",
 					"host": [
 						"127",
 						"0",
@@ -142,7 +154,7 @@
 					"path": [
 						"api",
 						"product",
-						"24"
+						"2"
 					]
 				}
 			},
@@ -154,7 +166,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/product",
+					"raw": "127.0.0.1:8000/api/product?per_page=2",
 					"host": [
 						"127",
 						"0",
@@ -169,18 +181,17 @@
 					"query": [
 						{
 							"key": "search",
-							"value": "exo",
+							"value": "pro",
 							"disabled": true
 						},
 						{
 							"key": "page",
-							"value": "5",
+							"value": "2",
 							"disabled": true
 						},
 						{
 							"key": "per_page",
-							"value": "5",
-							"disabled": true
+							"value": "2"
 						}
 					]
 				}
@@ -193,7 +204,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/product/20",
+					"raw": "127.0.0.1:8000/api/product/2",
 					"host": [
 						"127",
 						"0",
@@ -204,7 +215,7 @@
 					"path": [
 						"api",
 						"product",
-						"20"
+						"2"
 					]
 				}
 			},
@@ -216,7 +227,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/product/3",
+					"raw": "127.0.0.1:8000/api/product/1",
 					"host": [
 						"127",
 						"0",
@@ -227,7 +238,7 @@
 					"path": [
 						"api",
 						"product",
-						"3"
+						"1"
 					]
 				}
 			},
