@@ -53,6 +53,12 @@ Los endpoints correspondientes a los métodos mencionados son los siguientes:
 
 - GET /product: Obtiene una lista de todos los productos.
 - GET /product/{id}: Obtiene los detalles de un producto específico.
+   - Cuenta con params para: 
+        - busqueda -> Ejemplo buscando "exo" `api/product?search=exo`
+        - items por pagina -> Ejemplo `api/product?per_page=5`
+        - pagina -> Ejemplo `api/product?page=3`
+    
+    
 - POST /product: Crea un nuevo producto.
 - PUT /product/{id}: Actualiza un producto existente.
 - DELETE /product/{id}: Elimina un producto.
