@@ -38,6 +38,11 @@ php artisan serve
 
 El proyecto estará disponible en la dirección local [http://localhost:8000](http://localhost:8000).
 
+## Idioma de API
+
+La api cuenta con la posibilidad de configurarla para obtener mensajes de respuesta en ingles y español. Para configurar idioma debe ir a
+```config/app.php``` -> en la linea ``` 'locale' => 'es',``` puede seleccionar español = "es" o inglés = "en" 
+
 ## Uso de la API
 
 La API proporciona un conjunto de endpoints para interactuar con los productos. A continuación se muestra la ruta de la API y los métodos disponibles:
