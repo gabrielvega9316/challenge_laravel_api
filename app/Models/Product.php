@@ -17,7 +17,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'image',
+        'path_image',
         'brand',
         'price',
         'price_sale',
@@ -31,7 +31,7 @@ class Product extends Model
         'id' => 'integer',
         'name' => 'string',
         'description' => 'string',
-        'image' => 'string',
+        'path_image' => 'string',
         'brand' => 'string',
         'price' => 'float',
         'price_sale' => 'float',
@@ -42,7 +42,7 @@ class Product extends Model
     public static $rules = [
         'name' => 'required|string|max:50',
         'description' => 'nullable|string|max:50',
-        'image' => 'nullable|string',
+        'path_image' => 'nullable|string',
         'brand' => 'required|string',
         'price' => 'required|numeric',
         'price_sale' => 'nullable|numeric',

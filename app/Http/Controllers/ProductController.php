@@ -24,12 +24,13 @@ class ProductController extends Controller
         $search = $request->query('search');
         try {
             $query = Product::query();
+
             if ($search) {
                 $query->where('name', 'like', '%' . $search . '%');
             }
 
             $products = $query->paginate($perPage);
-            return ApiResponse::ok(__('messages.product_get_ok'), 'products', $products->toArray());
+            return ApiResponse::ok(__('messages.product_get_ok'), 'response', $products->toArray());
 
         } catch (\Throwable $th) {
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
@@ -45,19 +46,21 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        // data validator
         $validator = Validator::make($data, Product::$rules);
         if($validator->fails()) return ApiResponse::badRequest($validator->errors());
-        // dd('aqui toy');
 
         DB::beginTransaction();
         try {
             $product = Product::create($data);
+            //Image is stored through ImagesServices
             $image = ImageService::store($request->file('file'), $product);
-            $product->update(['image' => $image]);
+            $product->update(['path_image' => $image]);
+            DB::commit();
 
             $response = $product->with('category')->find($product->id);
-            DB::commit();
-            return ApiResponse::created(__('messages.product_store_ok'), $response->toArray(), 'product');
+            return ApiResponse::created(__('messages.product_store_ok'), $response->toArray(), 'response');
+
         } catch (\Throwable $th) {
             DB::rollback();
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
@@ -70,11 +73,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = Product::find($id);
         try {
-            if($product) return ApiResponse::ok(__('messages.product_get_id_ok'), 'product', $product->toArray());
-            // else return ApiResponse::notFound(__('messages.product_get_id_404'));
+            if($product) return ApiResponse::ok(__('messages.product_get_id_ok'), 'response', $product->toArray());
+            else return ApiResponse::notFound(__('messages.product_not_found'));
 
         } catch (\Throwable $th) {
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
@@ -88,9 +92,14 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
+        // validation of product existence
+        $product = Product::find($id);
+        if(!$product) return ApiResponse::notFound(__('messages.product_not_found'));
+
+        // validation data
         $validator = Validator::make($data, Product::$rules);
         if($validator->fails()) return ApiResponse::badRequest($validator->errors());
 
@@ -98,16 +107,18 @@ class ProductController extends Controller
         try {
             $product->update($data);
 
+            // if a file exists, the old file is deleted and updated with the new file
             if($request->file('file')){
-                $delete_img = ImageService::delete($product->image);
+                $delete_img = ImageService::delete($product->path_image);
                 if(!$delete_img) return ApiResponse::badRequest(__('messages.image_delete_bad_request'));
+
                 $image = ImageService::store($request->file('file'), $product);
-                $product->update(['image' => $image]);
+                $product->update(['path_image' => $image]);
             }
             DB::commit();
 
             $response = $product->with('category')->find($product->id);
-            return ApiResponse::ok(__('messages.product_update_ok'), 'product', $response->toArray());
+            return ApiResponse::ok(__('messages.product_update_ok'), 'response', $response->toArray());
         } catch (\Throwable $th) {
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
         }
@@ -119,12 +130,15 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
+        $product = Product::find($id);
         try {
             if($product){
                 $product->delete();
-                return ApiResponse::ok(__('messages.product_delete_ok'), 'product',  $product);
+                return ApiResponse::ok(__('messages.product_delete_ok'), 'response',  $product);
+            } else {
+                return ApiResponse::notFound(__('messages.product_not_found'));
             }
         } catch (\Throwable $th) {
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
