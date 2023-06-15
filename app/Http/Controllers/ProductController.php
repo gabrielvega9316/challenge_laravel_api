@@ -73,8 +73,8 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         try {
-            if($product) return ApiResponse::ok(__('messages.product_get_id_ok'), $product, 'product');
-            else return ApiResponse::notFound(__('messages.product_get_id_404'));
+            if($product) return ApiResponse::ok(__('messages.product_get_id_ok'), 'product', $product->toArray());
+            // else return ApiResponse::notFound(__('messages.product_get_id_404'));
 
         } catch (\Throwable $th) {
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
@@ -92,16 +92,22 @@ class ProductController extends Controller
     {
         $data = $request->all();
         $validator = Validator::make($data, Product::$rules);
-        if($validator->fails()) throw new ValidationException($validator);
+        if($validator->fails()) return ApiResponse::badRequest($validator->errors());
 
         DB::beginTransaction();
         try {
             $product->update($data);
-            //logica de update de imagen
+
+            if($request->file('file')){
+                $delete_img = ImageService::delete($product->image);
+                if(!$delete_img) return ApiResponse::badRequest(__('messages.image_delete_bad_request'));
+                $image = ImageService::store($request->file('file'), $product);
+                $product->update(['image' => $image]);
+            }
             DB::commit();
 
-            $response = $product->with('category');
-            return ApiResponse::ok(__('messages.product_update_ok'), $response->toArray(), 'product');
+            $response = $product->with('category')->find($product->id);
+            return ApiResponse::ok(__('messages.product_update_ok'), 'product', $response->toArray());
         } catch (\Throwable $th) {
             return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
         }
@@ -115,11 +121,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if($product){
-            $product->delete();
-            return ApiResponse::ok(__('messages.product_delete_ok'), $product, 'product');
-        } else {
-            return ApiResponse::notFound(__('messages.product_delete_404'));
+        try {
+            if($product){
+                $product->delete();
+                return ApiResponse::ok(__('messages.product_delete_ok'), 'product',  $product);
+            }
+        } catch (\Throwable $th) {
+            return (config('app.debug')) ? ApiResponse::serverError($th->getMessage()) : ApiResponse::serverError();
         }
     }
 }

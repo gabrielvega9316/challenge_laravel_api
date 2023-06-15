@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ImageService
 {
     public static function store($file, $data)
     {
         $ext = $file->getClientOriginalExtension();
-        if (in_array($ext, self::$allowedExt)) {
+        if (in_array($ext, self::$allowed_ext)) {
             $name = 'product_id_' . $data->id . '.' . $ext;
             $output = 'public/image_product';
 
@@ -21,7 +22,18 @@ class ImageService
         throw new \InvalidArgumentException('Invalid file extension');
     }
 
-    static public $allowedExt = [
+    public static function delete($path){
+        $route = public_path($path);
+
+        if (File::exists($route)) {
+            File::delete($route);
+            return true;
+        }
+
+        return false;
+    }
+
+    static public $allowed_ext = [
         "png", "jpeg", "jpg",
         "webp", "gif", "svg",
         "heic", "bmp", "eps",

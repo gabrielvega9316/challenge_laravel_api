@@ -8,7 +8,7 @@ return [
     'product_get_id_ok' => 'product successfully obtained',
     'product_delete_ok' => 'Product successfully deleted',
 
-    'product_get_id_404' => 'No product found',
-    'product_delete_404' => 'No product found',
+    'product_not_found' => 'No product found',
+    'image_delete_bad_request' => 'Error updating image'
 
 ];
