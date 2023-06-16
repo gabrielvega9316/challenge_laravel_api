@@ -62,7 +62,7 @@ Los endpoints correspondientes a los métodos mencionados son los siguientes:
 - POST /product: Crea un nuevo producto.
 - PUT /product/{id}: Actualiza un producto existente.
     - Manejo de imagen: Si envia una imagen esta remplazara a la antigua imagen por la nueva, Si no envia imagen conservara la almacenada.
-    - Header necesario: key -> X-HTTP-Method-Override  value -> PUT 
+    - Header necesario: key -> X-HTTP-Method-Override | value -> PUT 
 - DELETE /product/{id}: Elimina un producto.
 
 Para interactuar con la API, recomiendo utilizar la herramienta postman . La estructura de la respuesta es la siguiente:
