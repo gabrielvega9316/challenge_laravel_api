@@ -3,7 +3,7 @@
 
 # Proyecto MailUp
 
-Este proyecto Laravel es una aplicación para realizar abm de productos. A continuación, se proporcionan instrucciones para configurar y levantar el proyecto localmente, así como información sobre cómo utilizar la API.
+Este proyecto en Laravel 9 es una aplicación para realizar abm de productos. A continuación, se proporcionan instrucciones para configurar y levantar el proyecto localmente, así como información sobre cómo utilizar la API.
 
 
 ## Configuración del entorno
