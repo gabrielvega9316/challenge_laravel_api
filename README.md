@@ -1,7 +1,7 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 
-# Proyecto MailUp
+# Proyecto Challenge Laravel Api
 
 Este proyecto en Laravel 9 es una aplicación para realizar abm de productos. A continuación, se proporcionan instrucciones para configurar y levantar el proyecto localmente, así como información sobre cómo utilizar la API.
 
@@ -76,3 +76,45 @@ Para interactuar con la API, recomiendo utilizar la herramienta postman . La est
     }
 ```
 
+# Consigna
+1 - Construir un API REST
+
+Al momento de desarrollar nuevos features o refactorizar nuestro sistema nos encontramos ante la necesidad
+de saber ¿Cómo? y ¿Dónde? agregar código y como así también de ser ágil a la hora de buscar código para
+analizar y refactorizar.
+Dicho lo anterior el programador deberá crear un API REST, el concepto que se aplicará para esta evaluación
+es la de lograr administrar información de productos de un E-commerce por medio de esta API.
+
+El API REST debe persistir los datos en una base de datos MySQL.
+El API REST debe tener los siguientes endpoints (CRUD Completo)
+- Crear un producto
+- Obtener todos los productos (Implementar una lógica de paginación y de búsqueda por nombre)
+- Obtener información de un producto
+- Modificar información de un producto
+- Eliminar un producto
+  
+### Datos básicos del producto
+name, description, image, brand, price, price_sale, category, stock
+- Ejemplo de datos
+```
+{
+    name: "MacBook Pro 13.3" Retina [MYD82] M1 Chip 256 GB - Space Gray"
+    description: ""
+    image: "apple.com/v/macbook-pro/ac/images/overview/hero_13__d1tfa5zby7e6_large_2x.jpg"
+    brand: "Apple"
+    price: 2000
+    price_sale: 1950
+    category: "Macbook Pro"
+    stock: 5
+}
+```
+- Conocimientos a validar
+    - PHP
+    - LARAVEL (Eloquent con MYSQL)
+    - CONCEPTO Y CREACIÓN DE API REST
+    - GIT
+    - GITHUB o GITLAB
+  
+### Recomendaciones a tener en cuenta
+Validaciones, código de status de respuestas, nomenclatura de los endpoints, verbos de los endpoints (GET,
+POST, PUT, etc), documentación de uso del API, migrations y seeders de Laravel.
